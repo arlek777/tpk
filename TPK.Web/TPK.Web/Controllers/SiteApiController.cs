@@ -1,0 +1,24 @@
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using TPK.Web.Data;
+using TPK.Web.Models;
+
+namespace TPK.Web.Controllers
+{
+    [Route("api/site")]
+    public class SiteApiController : Controller
+    {
+        private readonly TPKDbContext _context;
+
+        public SiteApiController(TPKDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public Site Get()
+        {
+            return _context.Site.FirstOrDefault();
+        }
+    }
+}
