@@ -10,8 +10,7 @@ namespace TPK.Web.Data
         {
         }
 
-        public DbSet<Category> Category { get; set; }
-        public DbSet<Item> Item { get; set; }
+        public DbSet<Content> Content { get; set; }
         public DbSet<Site> Site { get; set; }
     }
 }

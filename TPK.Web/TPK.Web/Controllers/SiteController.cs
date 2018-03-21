@@ -40,12 +40,6 @@ namespace TPK.Web.Controllers
             return View(site);
         }
 
-        // GET: Site/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         // GET: Site/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

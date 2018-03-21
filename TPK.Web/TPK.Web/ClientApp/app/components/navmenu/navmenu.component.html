@@ -1,30 +1,25 @@
-<div class='main-nav'>
-    <div class='navbar navbar-inverse'>
+﻿<div class='main-nav'>
+    <div class='navbar navbar-default'>
         <div class='navbar-header'>
             <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
-                <span class='sr-only'>Toggle navigation</span>
+                <span class='sr-only'>Переключить</span>
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
             </button>
-            <a class='navbar-brand' [routerLink]="['/home']">TPK.Web</a>
+            <a class='navbar-brand' [routerLink]="['/home']">ТПК-Гранит</a>
         </div>
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/home']">
-                        <span class='glyphicon glyphicon-home'></span> Home
+                        <span class='glyphicon glyphicon-home'></span> Главная
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/counter']">
-                        <span class='glyphicon glyphicon-education'></span> Counter
-                    </a>
-                </li>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/fetch-data']">
-                        <span class='glyphicon glyphicon-th-list'></span> Fetch data
+                <li *ngFor="let category of categories" [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/category', category.id]">
+                        <span class='glyphicon glyphicon-circle-arrow-right'></span> {{ category.title }}
                     </a>
                 </li>
             </ul>
