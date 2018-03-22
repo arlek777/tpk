@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Data.Entity;
 using TPK.Web.Models;
 
 namespace TPK.Web.Data
 {
     public class TPKDbContext : DbContext
     {
-        public TPKDbContext (DbContextOptions<TPKDbContext> options)
-            : base(options)
+        public TPKDbContext (string connString)
+            : base(connString)
         {
         }
 

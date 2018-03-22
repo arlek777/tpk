@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using TPK.Web.Data;
 using TPK.Web.Models;
 
@@ -27,8 +26,8 @@ namespace TPK.Web
         {
             services.AddMvc();
 
-            services.AddDbContext<TPKDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("TPKDbContext")));
+            var connString = Configuration.GetConnectionString("Local");
+            services.AddScoped<TPKDbContext>((provider) => new TPKDbContext(connString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

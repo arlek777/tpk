@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using TPK.Web.Data;
 using TPK.Web.Models;
 
@@ -19,9 +17,9 @@ namespace TPK.Web.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Content.ToListAsync());
+            return View(_context.Content.ToList());
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -52,7 +50,7 @@ namespace TPK.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(content);
+                _context.Content.Add(content);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -87,10 +85,10 @@ namespace TPK.Web.Controllers
             {
                 try
                 {
-                    _context.Update(content);
+                    // TODO update
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception exc)
                 {
                     if (!CategoryExists(content.Id))
                     {

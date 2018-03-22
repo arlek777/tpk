@@ -68,7 +68,7 @@ namespace TPK.Web.Infrastructure
 
                         new WebClient().DownloadFile(BaseUrl + photo.Attributes["src"].Value.Replace("amp;", ""), path);
 
-                        var titlePriceList = titlePrice.Trim().Split(" ").ToList();
+                        var titlePriceList = titlePrice.Trim().Split(' ').ToList();
                         var priceIndex = titlePriceList.FindIndex(s => s.Contains("Цена"));
                         var price = titlePriceList[++priceIndex];
                         var title = $"{titlePriceList[0]} {titlePriceList[1]} {titlePriceList[2]}";

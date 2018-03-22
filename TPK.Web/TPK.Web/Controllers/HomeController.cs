@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TPK.Web.Data;
 using TPK.Web.Infrastructure;
 

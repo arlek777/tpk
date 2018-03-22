@@ -1,7 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TPK.Web.Data;
 using TPK.Web.Models;
 
@@ -72,10 +73,10 @@ namespace TPK.Web.Controllers
             {
                 try
                 {
-                    _context.Update(site);
+                    //TODO update_context.Update(site);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception)
                 {
                     if (!SiteExists(site.Id))
                     {
