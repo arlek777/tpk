@@ -27,7 +27,7 @@ namespace TPK.Web
             services.AddMvc();
 
             var connString = Configuration.GetConnectionString("Local");
-            services.AddScoped<TPKDbContext>((provider) => new TPKDbContext(connString));
+            services.AddSingleton<TPKDbContext>((provider) => new TPKDbContext(connString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

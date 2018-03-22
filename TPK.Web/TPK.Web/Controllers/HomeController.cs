@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using TPK.Web.Data;
@@ -25,7 +26,7 @@ namespace TPK.Web.Controllers
 
         public IActionResult Import()
         {
-            OldTpkSiteImporter.ImportToDb(_dbContext, _environment.ContentRootPath + "/Img/Items");
+            //Task.Factory.StartNew(() => OldTpkSiteImporter.ImportToDb(_dbContext, _environment.ContentRootPath));
             return RedirectToAction("Index");
         }
 
