@@ -18,13 +18,16 @@ namespace TPK.Web.Controllers
             _context = context;
         }
 
+        [Route("[action]")]
         [HttpGet]
-        public IEnumerable<Content> GetRootCategories()
+        public IActionResult GetRootCategories()
         {
-            return _context.Content.Where(c => !c.CategoryId.HasValue && c.ContentType == ContentType.Category).ToList();
+            var result = _context.Content.Where(c => !c.CategoryId.HasValue && c.ContentType == ContentType.Category).ToList();
+            return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [Route("[action]/{id}")]
+        [HttpGet]
         public async Task<IActionResult> GetContent([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -32,20 +35,20 @@ namespace TPK.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var category = await _context.Content.SingleOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            var item = await _context.Content.FirstOrDefaultAsync(c => c.Id == id && c.ContentType == ContentType.Item);
+            if(item != null)
             {
-                return NotFound();
+                return Ok(item);
             }
 
             var subCategories = _context.Content.Where(c => c.CategoryId == id && c.ContentType == ContentType.Category).ToList();
             if (subCategories.Any())
             {
-                return Ok(subCategories);
+                return Ok(new { data = subCategories, type = ContentType.Category });
             }
 
             var items = _context.Content.Where(c => c.CategoryId == id && c.ContentType == ContentType.Item);
-            return Ok(items);
+            return Ok(new { data = items, type = ContentType.Item });
         }
     }
 }

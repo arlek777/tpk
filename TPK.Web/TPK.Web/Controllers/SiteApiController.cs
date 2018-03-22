@@ -15,6 +15,7 @@ namespace TPK.Web.Controllers
             _context = context;
         }
 
+        [Route("[action]")]
         [HttpGet]
         public Site Get()
         {

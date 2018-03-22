@@ -8,13 +8,13 @@ export class BackendService {
     constructor(private http: Http) { }
 
     getRootCategories(): Promise<ContentViewModel[]> {
-        return this.http.get("/api/content/getrootcategories").toPromise().then((result) => {
+        return this.http.get("/api/content/getRootCategories").toPromise().then((result) => {
             return result.json();
         });
     }
 
-    getContent(id: number): Promise<ContentViewModel[]> {
-        return this.http.get("/api/content/getcontent", { params: { id: id } }).toPromise().then((result) => {
+    getContent(id: string): Promise<any> {
+        return this.http.get("/api/content/getContent", { params: { id: id } }).toPromise().then((result) => {
             return result.json();
         });
     }
