@@ -4,17 +4,20 @@ import { ContentViewModel, ContentType } from '../../models';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-    templateUrl: './category.component.html'
+    templateUrl: './content.component.html'
 })
-export class CategoryComponent implements OnInit {
-    content: { data: ContentViewModel[], type: ContentType }
+export class ContentComponent implements OnInit {
+    content: { data: ContentViewModel[], type: ContentType };
+    ContentType = ContentType;
 
     constructor(private backendService: BackendService, private activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit() {
-        this.backendService.getContent(this.activatedRoute.snapshot.params["id"]).then(content => {
-            this.content = content;
+        this.activatedRoute.params.subscribe(params => {
+            this.backendService.getContent(params["id"]).then(content => {
+                this.content = content;
+            });
         });
     }
 }

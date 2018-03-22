@@ -1,0 +1,6 @@
+<div *ngFor="let item of items">
+    <a [routerLink]="['/item-details', item.id]">
+        <img src="{{ item.imgSrc }}" />
+        {{ item.title }}
+    </a>
+</div>

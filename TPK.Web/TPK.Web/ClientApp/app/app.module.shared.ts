@@ -8,12 +8,18 @@ import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { BackendService } from './services/backend.service';
+import { ContentComponent } from './components/content/content.component';
+import { CategoriesComponent } from './components/categories/categories.component';
+import { ItemsComponent } from './components/items/items.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         NavMenuComponent,
-        HomeComponent
+        HomeComponent,
+        ContentComponent,
+        CategoriesComponent,
+        ItemsComponent
     ],
     imports: [
         CommonModule,
@@ -22,6 +28,8 @@ import { BackendService } from './services/backend.service';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
+            { path: 'content/:id', component: ContentComponent },
+            { path: 'item-details/:id', component: ContentComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ],

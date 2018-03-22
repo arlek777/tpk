@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -18,21 +17,21 @@ namespace TPK.Web.Controllers
             _context = context;
         }
 
-        [Route("[action]")]
+        /// <summary>
+        /// Returns content depends on the situation.
+        /// 1. If id is not present - return root categories.
+        /// 2. If item with id is found - return this item (items page).
+        /// 3. If sub categories are found - return them (category page).
+        /// 4. If items are found - return them (items page).
+        /// </summary>
         [HttpGet]
-        public IActionResult GetRootCategories()
+        [Route("[action]/{id?}")]
+        public async Task<IActionResult> Get(int? id)
         {
-            var result = _context.Content.Where(c => !c.CategoryId.HasValue && c.ContentType == ContentType.Category).ToList();
-            return Ok(result);
-        }
-
-        [Route("[action]/{id}")]
-        [HttpGet]
-        public async Task<IActionResult> GetContent([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
+            if (!id.HasValue)
             {
-                return BadRequest(ModelState);
+                var rootCategories = _context.Content.Where(c => !c.CategoryId.HasValue && c.ContentType == ContentType.Category).ToList();
+                return Ok(rootCategories);
             }
 
             var item = await _context.Content.FirstOrDefaultAsync(c => c.Id == id && c.ContentType == ContentType.Item);

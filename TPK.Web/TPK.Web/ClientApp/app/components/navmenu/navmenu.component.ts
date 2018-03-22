@@ -14,8 +14,8 @@ export class NavMenuComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.backendService.getRootCategories().then(categories => {
+        this.backendService.getContent().then(categories => {
             this.categories = categories;
-        })
+        });
     }
 }
