@@ -1,5 +1,19 @@
-<div *ngFor="let category of categories">
-    <a [routerLink]="['/content', category.id]">
-        {{ category.title }}
-    </a>
+<div class="row">
+    <div class="col-md-6" *ngFor="let category of categories">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <div class="col-md-offset-2 col-md-8">
+                    <a [routerLink]="['/content', category.id]">
+                        <img class="img-responsive img-rounded" src="/Img/Items/Id10.jpeg" />
+                    </a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body text-center">
+                <a [routerLink]="['/content', category.id]">
+                    <h4>{{ category.title }}</h4>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

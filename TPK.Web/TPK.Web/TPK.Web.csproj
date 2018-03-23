@@ -37,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\app\components\item-details\" />
     <Folder Include="wwwroot\Img\Gallery\" />
   </ItemGroup>
 
