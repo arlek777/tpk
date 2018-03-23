@@ -1,1 +1,25 @@
-<div>{{ item.title }}</div>
+﻿<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="javascript: " (click)="previous()" *ngIf="currentIndex > 0">Назад</a>
+                <a href="javascript: " (click)="next()" *ngIf="currentIndex < items.length - 1">Дальше</a>
+                <h3>
+                    {{ item.title.replace("пам", "Пам") }}
+                    <span *ngIf="item.price">- {{ item.price }}</span>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6" [ngClass]="{ 'col-md-offset-4': !item.description }">
+                        <img height="500" src="{{ item.imgSrc }}" class="img-rounded" />
+                    </div>
+                    <div class="col-md-6" *ngIf="item.description">
+                        <h3>Описание: </h3>
+                        <p *ngFor="let line of item.description.replace('*', '').split('.')">{{ line }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

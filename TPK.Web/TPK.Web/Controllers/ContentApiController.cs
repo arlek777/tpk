@@ -20,7 +20,7 @@ namespace TPK.Web.Controllers
         /// <summary>
         /// Returns content depends on the situation.
         /// 1. If id is not present - return root categories.
-        /// 2. If item with id is found - return this item (items page).
+        /// 2. If item with id is found - return this item and all items (items page).
         /// 3. If sub categories are found - return them (category page).
         /// 4. If items are found - return them (items page).
         /// </summary>
@@ -38,7 +38,9 @@ namespace TPK.Web.Controllers
             var item = await _context.Content.FirstOrDefaultAsync(c => c.Id == id && c.ContentType == ContentType.Item);
             if(item != null)
             {
-                return Ok(item);
+                var items = _context.Content.Where(c => c.CategoryId == item.CategoryId 
+                && c.ContentType == ContentType.Item);
+                return Ok(new { item, data = items, contentType = ContentType.Item });
             }
 
             var subCategories = _context.Content.Where(c => c.CategoryId == id && c.ContentType == ContentType.Category).ToList();
@@ -47,8 +49,8 @@ namespace TPK.Web.Controllers
                 return Ok(new { data = subCategories, contentType = ContentType.Category });
             }
 
-            var items = _context.Content.Where(c => c.CategoryId == id && c.ContentType == ContentType.Item);
-            return Ok(new { data = items, contentType = ContentType.Item });
+            var categoryItems = _context.Content.Where(c => c.CategoryId == id && c.ContentType == ContentType.Item);
+            return Ok(new { data = categoryItems, contentType = ContentType.Item });
         }
     }
 }

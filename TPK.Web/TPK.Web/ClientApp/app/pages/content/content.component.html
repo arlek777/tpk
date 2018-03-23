@@ -1,7 +1,7 @@
-<ng-container *ngIf="content && !content.data && content.contentType == ContentType.Item">
-    <item-details [item]="content"></item-details>
+<ng-container *ngIf="content && content.item">
+    <item-details [item]="content.item" [items]="content.data"></item-details>
 </ng-container>
-<ng-container *ngIf="content && content.data && content.contentType == ContentType.Item">
+<ng-container *ngIf="content && !content.item && content.data && content.contentType == ContentType.Item">
     <items [items]="content.data"></items>
 </ng-container>
 <ng-container *ngIf="content && content.data && content.contentType == ContentType.Category">

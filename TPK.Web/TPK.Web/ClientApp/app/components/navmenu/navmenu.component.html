@@ -22,6 +22,11 @@
                         <span class='glyphicon glyphicon-circle-arrow-right'></span> {{ category.title }}
                     </a>
                 </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/contact']">
+                        <span class='glyphicon glyphicon-map-marker'></span> Контакты
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

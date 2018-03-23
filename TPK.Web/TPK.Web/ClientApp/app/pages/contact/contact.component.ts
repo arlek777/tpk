@@ -1,19 +1,17 @@
 import { Component } from '@angular/core';
 import { BackendService } from '../../services/backend.service';
-import { ContentViewModel, SiteViewModel } from '../../models';
+import { SiteViewModel } from '../../models';
 
 @Component({
-    templateUrl: './home.component.html'
+    templateUrl: './contact.component.html'
 })
-export class HomeComponent {
-    categories: ContentViewModel[] = [];
+export class ContactComponent {
     site: SiteViewModel = new SiteViewModel();
 
     constructor(private backendService: BackendService) {
     }
 
     ngOnInit() {
-        this.backendService.getContent().then(categories => this.categories = categories);
         this.backendService.getSite().then(site => this.site = site);
     }
 }

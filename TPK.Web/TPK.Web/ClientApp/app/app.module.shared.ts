@@ -12,6 +12,7 @@ import { ContentComponent } from './pages/content/content.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { ItemsComponent } from './components/items/items.component';
 import { ItemDetailsComponent } from './components/item-details/item-details.component';
+import { ContactComponent } from './pages/contact/contact.component';
 
 @NgModule({
     declarations: [
@@ -21,7 +22,8 @@ import { ItemDetailsComponent } from './components/item-details/item-details.com
         ContentComponent,
         CategoriesComponent,
         ItemsComponent,
-        ItemDetailsComponent
+        ItemDetailsComponent,
+        ContactComponent
     ],
     imports: [
         CommonModule,
@@ -30,6 +32,7 @@ import { ItemDetailsComponent } from './components/item-details/item-details.com
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
+            { path: 'contact', component: ContactComponent },
             { path: 'content/:id', component: ContentComponent },
             { path: '**', redirectTo: 'home' }
         ])

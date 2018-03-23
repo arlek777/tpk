@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
     templateUrl: './content.component.html'
 })
 export class ContentComponent implements OnInit {
-    content: { data: ContentViewModel[], type: ContentType };
+    content: { data: ContentViewModel[], type: ContentType, item: ContentViewModel };
     ContentType = ContentType;
 
     constructor(private backendService: BackendService, private activatedRoute: ActivatedRoute) {
