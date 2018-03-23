@@ -1,6 +1,20 @@
-<div *ngFor="let item of items">
-    <a [routerLink]="['/content', item.id]">
-        <img src="{{ item.imgSrc }}" />
-        {{ item.title }}
-    </a>
+<div style="overflow-y: auto; max-height: 600px" class="row">
+    <div class="col-md-4" *ngFor="let item of items">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <div class="col-md-offset-2 col-md-8">
+                    <a [routerLink]="['/content', item.id]">
+                        <img height="200" class="img-rounded" src="{{ item.imgSrc }}" />
+                    </a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body text-center">
+                <a [routerLink]="['/content', item.id]">
+                    <h4>{{ item.title }}</h4>
+                    <h4>{{ item.price }}</h4>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

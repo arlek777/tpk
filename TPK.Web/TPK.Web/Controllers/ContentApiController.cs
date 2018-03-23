@@ -26,6 +26,7 @@ namespace TPK.Web.Controllers
         /// </summary>
         [HttpGet]
         [Route("[action]/{id?}")]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> Get(int? id)
         {
             if (!id.HasValue)
@@ -43,11 +44,11 @@ namespace TPK.Web.Controllers
             var subCategories = _context.Content.Where(c => c.CategoryId == id && c.ContentType == ContentType.Category).ToList();
             if (subCategories.Any())
             {
-                return Ok(new { data = subCategories, type = ContentType.Category });
+                return Ok(new { data = subCategories, contentType = ContentType.Category });
             }
 
             var items = _context.Content.Where(c => c.CategoryId == id && c.ContentType == ContentType.Item);
-            return Ok(new { data = items, type = ContentType.Item });
+            return Ok(new { data = items, contentType = ContentType.Item });
         }
     }
 }
