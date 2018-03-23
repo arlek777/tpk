@@ -26,7 +26,7 @@ namespace TPK.Web.Controllers
 
         public IActionResult Import()
         {
-            //Task.Factory.StartNew(() => OldTpkSiteImporter.ImportToDb(_dbContext, _environment.WebRootPath));
+           // Task.Factory.StartNew(() => OldTpkSiteImporter.ImportToDb(_dbContext, _environment.WebRootPath));
             return RedirectToAction("Index");
         }
 

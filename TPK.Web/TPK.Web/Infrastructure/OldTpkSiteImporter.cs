@@ -96,7 +96,7 @@ namespace TPK.Web.Infrastructure
 
                             new WebClient().DownloadFile(BaseUrl + photo.Attributes["src"].Value.Replace("amp;", ""), photoPathToSave);
 
-                            var titlePriceList = titlePrice.Trim().Split(' ').ToList();
+                            var titlePriceList = titlePrice.Trim().Replace("&nbsp;", "").Split(' ').ToList();
                             string price = String.Empty;
                             string title = String.Empty;
                             if (titlePriceList.Count == 1)
@@ -105,7 +105,7 @@ namespace TPK.Web.Infrastructure
                             }
                             else
                             {
-                                var priceIndex = titlePriceList.FindIndex(s => s.Contains("Цена"));
+                                var priceIndex = titlePriceList.FindIndex(s => s.ToLower().Contains("цена"));
                                 price = titlePriceList[++priceIndex];
                                 title = $"{titlePriceList[0]} {titlePriceList[1]} {titlePriceList[2]}";
                             }

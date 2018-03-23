@@ -33,6 +33,7 @@ export class SiteViewModel {
     name2: string;
     homeText: string;
     contactText: string;
+    address: string;
     phone1: string;
     phone2: string;
     email: string;
