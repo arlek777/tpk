@@ -1,5 +1,7 @@
 ﻿import { Mapper } from "./services/mapper.service";
 
+export const CURRENCY = "грн";
+
 export enum ContentType {
     Category,
     Item

@@ -26,7 +26,7 @@ namespace TPK.Web.Controllers
         /// </summary>
         [HttpGet]
         [Route("[action]/{id?}")]
-        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        //[ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> Get(int? id)
         {
             if (!id.HasValue)

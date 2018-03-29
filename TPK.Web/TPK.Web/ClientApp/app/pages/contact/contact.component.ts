@@ -1,17 +1,24 @@
 import { Component } from '@angular/core';
 import { BackendService } from '../../services/backend.service';
 import { SiteViewModel } from '../../models';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
     templateUrl: './contact.component.html'
 })
 export class ContactComponent {
-    site: SiteViewModel = new SiteViewModel();
+    private mapAddressUrl = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDmrOSEFeAXVcWE8M8d-hsmwQw8CnbYfcM&q=";
 
-    constructor(private backendService: BackendService) {
+    site: SiteViewModel = new SiteViewModel();
+    mapAddressTrustedUrl: SafeUrl;
+
+    constructor(private backendService: BackendService, private sanitizer: DomSanitizer) {
     }
 
     ngOnInit() {
-        this.backendService.getSite().then(site => this.site = site);
+        this.backendService.getSite().then(site => {
+            this.site = site;
+            this.mapAddressTrustedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.mapAddressUrl + this.site.address);
+        });
     }
 }

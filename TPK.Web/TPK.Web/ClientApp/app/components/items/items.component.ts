@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { BackendService } from '../../services/backend.service';
-import { ContentViewModel, ContentType } from '../../models';
+import { ContentViewModel, ContentType, CURRENCY } from '../../models';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,4 +10,6 @@ import { ActivatedRoute } from '@angular/router';
 export class ItemsComponent {
     @Input()
     items: ContentViewModel[] = [];
+
+    CURRENCY = CURRENCY;
 }

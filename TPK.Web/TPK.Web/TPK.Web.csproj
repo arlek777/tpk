@@ -28,10 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\directives\trust-html.directive.ts" />
     <None Remove="ClientApp\app\services\mapper.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\directives\trust-html.directive.ts" />
     <TypeScriptCompile Include="ClientApp\app\models.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\mapper.service.ts" />
   </ItemGroup>

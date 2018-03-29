@@ -13,6 +13,7 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { ItemsComponent } from './components/items/items.component';
 import { ItemDetailsComponent } from './components/item-details/item-details.component';
 import { ContactComponent } from './pages/contact/contact.component';
+import { TrustHtmlDirective } from './directives/trust-html.directive';
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import { ContactComponent } from './pages/contact/contact.component';
         CategoriesComponent,
         ItemsComponent,
         ItemDetailsComponent,
-        ContactComponent
+        ContactComponent,
+        TrustHtmlDirective
     ],
     imports: [
         CommonModule,

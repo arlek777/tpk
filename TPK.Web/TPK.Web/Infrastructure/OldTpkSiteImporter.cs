@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using HtmlAgilityPack;
@@ -94,7 +95,10 @@ namespace TPK.Web.Infrastructure
                             var description = itemDetailsPageDesc
                                 .FirstOrDefault(n => n.Id == "jg_photo_description")?.InnerText?.Trim();
 
-                            new WebClient().DownloadFile(BaseUrl + photo.Attributes["src"].Value.Replace("amp;", ""), photoPathToSave);
+                            if (!File.Exists(photoPathToSave))
+                            {
+                                new WebClient().DownloadFile(BaseUrl + photo.Attributes["src"].Value.Replace("amp;", ""), photoPathToSave);
+                            }
 
                             var titlePriceList = titlePrice.Trim().Replace("&nbsp;", "").Split(' ').ToList();
                             string price = String.Empty;
@@ -116,7 +120,7 @@ namespace TPK.Web.Infrastructure
                                 CategoryId = subCategoryContent.Id,
                                 Description = description,
                                 ImgSrc = photoPathToDb,
-                                Title = title,
+                                Title = title.Replace("пам", "Пам"),
                                 Price = price
                             };
 

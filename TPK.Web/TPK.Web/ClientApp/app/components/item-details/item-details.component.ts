@@ -1,6 +1,6 @@
 import { Component, Input, AfterViewInit } from '@angular/core';
 import { BackendService } from '../../services/backend.service';
-import { ContentViewModel, ContentType } from '../../models';
+import { ContentViewModel, ContentType, CURRENCY } from '../../models';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -16,6 +16,7 @@ export class ItemDetailsComponent implements AfterViewInit {
     items: ContentViewModel[] = [];
 
     currentIndex = -1;
+    CURRENCY = CURRENCY;
 
     ngAfterViewInit() {
         this.currentIndex = this.items.findIndex(i => i.id === this.item.id);
