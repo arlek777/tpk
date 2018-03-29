@@ -22,23 +22,6 @@ namespace TPK.Web.Controllers
             return View(_context.Content.ToList());
         }
 
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var content = await _context.Content
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (content == null)
-            {
-                return NotFound();
-            }
-
-            return View(content);
-        }
-
         public IActionResult Create()
         {
             return View();
@@ -85,7 +68,14 @@ namespace TPK.Web.Controllers
             {
                 try
                 {
-                    // TODO update
+                    var dbContent = await _context.Content.SingleOrDefaultAsync(m => m.Id == id);
+                    dbContent.Description = content.Description;
+                    dbContent.ContentType = content.ContentType;
+                    dbContent.CategoryId = content.CategoryId;
+                    dbContent.ImgSrc = content.ImgSrc;
+                    dbContent.Price = content.Price;
+                    dbContent.Title = content.Title;
+
                     await _context.SaveChangesAsync();
                 }
                 catch (Exception exc)

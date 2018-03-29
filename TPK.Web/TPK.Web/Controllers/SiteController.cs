@@ -23,24 +23,6 @@ namespace TPK.Web.Controllers
             return View(_context.Site.ToList());
         }
 
-        // GET: Site/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var site = await _context.Site
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (site == null)
-            {
-                return NotFound();
-            }
-
-            return View(site);
-        }
-
         // GET: Site/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -73,7 +55,16 @@ namespace TPK.Web.Controllers
             {
                 try
                 {
-                    //TODO update_context.Update(site);
+                    var dbSite = await _context.Site.SingleOrDefaultAsync(m => m.Id == id);
+                    dbSite.Address = site.Address;
+                    dbSite.ContactText = site.ContactText;
+                    dbSite.HomeText = site.HomeText;
+                    dbSite.Name = site.Name;
+                    dbSite.Name2 = site.Name2;
+                    dbSite.Phone1 = site.Phone1;
+                    dbSite.Phone2 = site.Phone2;
+                    dbSite.Email = site.Email;
+
                     await _context.SaveChangesAsync();
                 }
                 catch (Exception)
