@@ -1,9 +1,10 @@
 ﻿<div class="row">
     <div class="col-md-12">
+        <a href="javascript: " (click)="navigateToPreviousUrl()">Назад в каталог</a>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <a href="javascript: " (click)="previous()" *ngIf="currentIndex > 0">Назад</a>
-                <a href="javascript: " (click)="next()" *ngIf="currentIndex < items.length - 1">Дальше</a>
+                <button class="btn btn-sm" (click)="previous()" *ngIf="currentIndex > 0">Назад</button>
+                <button class="btn btn-sm" (click)="next()" *ngIf="currentIndex < items.length - 1">Дальше</button>
                 <h3 class="main-color">
                     {{ item.title }}
                     <span *ngIf="item.price">- {{ item.price }} {{ CURRENCY }}</span>

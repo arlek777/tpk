@@ -19,7 +19,8 @@
                 </li>
                 <li *ngFor="let category of categories" [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/content', category.id]">
-                        <span class='glyphicon glyphicon-circle-arrow-right'></span> {{ category.title }}
+                        <span class='glyphicon glyphicon-circle-arrow-right'></span> 
+                        {{ category.title }}
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
