@@ -22,12 +22,14 @@ namespace TPK.Web
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IHostingEnvironment environment)
         {
             services.AddMvc();
             services.AddMemoryCache();
 
-            var connString = Configuration.GetConnectionString("Local");
+            var env = environment.IsDevelopment() ? "Local" : "Remote";
+
+            var connString = Configuration.GetConnectionString(env);
             services.AddScoped((provider) => new TPKDbContext(connString));
         }
 
