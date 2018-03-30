@@ -25,6 +25,7 @@ namespace TPK.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddMemoryCache();
 
             var connString = Configuration.GetConnectionString("Local");
             services.AddScoped((provider) => new TPKDbContext(connString));

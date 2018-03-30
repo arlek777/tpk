@@ -2,8 +2,10 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using TPK.Web.Data;
+using TPK.Web.Infrastructure;
 using TPK.Web.Models;
 
 namespace TPK.Web.Controllers
@@ -11,10 +13,18 @@ namespace TPK.Web.Controllers
     public class ContentController : Controller
     {
         private readonly TPKDbContext _context;
+        private readonly IHostingEnvironment _environment;
 
-        public ContentController(TPKDbContext context)
+        public ContentController(TPKDbContext context, IHostingEnvironment environment)
         {
             _context = context;
+            _environment = environment;
+        }
+
+        public IActionResult Import()
+        {
+            OldTpkSiteImporter.ImportToDb(_context, _environment.WebRootPath);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Index()

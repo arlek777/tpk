@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TPK.Web.Data;
 using TPK.Web.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace TPK.Web.Controllers
 {
@@ -13,11 +14,15 @@ namespace TPK.Web.Controllers
     public class ContentApiController : Controller
     {
         private readonly TPKDbContext _context;
-        private const string Currency = "грн";
+        private readonly IMemoryCache _memoryCache;
 
-        public ContentApiController(TPKDbContext context)
+        private const string Currency = "грн";
+        private const string RootCategoriesCacheKey = "RootCategoriesCacheKey";
+
+        public ContentApiController(TPKDbContext context, IMemoryCache memoryCache)
         {
             _context = context;
+            _memoryCache = memoryCache;
         }
 
         /// <summary>
@@ -29,7 +34,7 @@ namespace TPK.Web.Controllers
         /// </summary>
         [HttpGet]
         [Route("[action]/{id?}")]
-        //[ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> Get(int? id)
         {
             try
@@ -56,43 +61,62 @@ namespace TPK.Web.Controllers
 
         private IActionResult GetRootCategories()
         {
-            var rootCategories = _context.Content
+            List<Content> rootCategories;
+            if (!_memoryCache.TryGetValue(RootCategoriesCacheKey, out rootCategories))
+            {
+                rootCategories = _context.Content
                 .Where(c => !c.CategoryId.HasValue && c.ContentType == ContentType.Category)
                 .ToList();
 
-            rootCategories = rootCategories.Select(AddPriceRangeToTitle).ToList();
+                rootCategories = rootCategories.Select(AddPriceRangeToTitle).ToList();
+                _memoryCache.Set(RootCategoriesCacheKey, rootCategories, DateTimeOffset.UtcNow.AddYears(1));
+            }
 
             return Ok(rootCategories);
         }
 
         private async Task<IActionResult> GetItem(int id)
         {
-            var item = await _context.Content.FirstOrDefaultAsync(c => c.Id == id
-                   && c.ContentType == ContentType.Item);
-            if (item == null) return null;
+            object cacheEntry;
+            if(!_memoryCache.TryGetValue(id, out cacheEntry))
+            {
+                var item = await _context.Content.FirstOrDefaultAsync(c => c.Id == id
+                 && c.ContentType == ContentType.Item);
+                if (item == null) return null;
 
-            var items = _context.Content.Where(c => c.CategoryId == item.CategoryId
-               && c.ContentType == ContentType.Item);
-            return Ok(new { item, data = items, contentType = ContentType.Item });
+                var items = _context.Content.Where(c => c.CategoryId == item.CategoryId
+                   && c.ContentType == ContentType.Item);
+
+               cacheEntry = new { item, data = items, contentType = ContentType.Item };
+                _memoryCache.Set(id, cacheEntry, DateTimeOffset.UtcNow.AddYears(1));
+            }
+
+            return Ok(cacheEntry);
         }
 
         private IActionResult GetItemsOrSubCategories(int id)
         {
-            var items = _context.Content.Where(c => c.CategoryId == id && c.ContentType == ContentType.Item).ToList();
-            if (items.Any())
+            object cacheEntry;
+            if (!_memoryCache.TryGetValue(id, out cacheEntry))
             {
-                return Ok(new { data = items, contentType = ContentType.Item });
-            }
-            else
-            {
-                var subCategories = _context.Content
-                    .Where(c => c.CategoryId == id && c.ContentType == ContentType.Category)
-                    .ToList();
+                var items = _context.Content.Where(c => c.CategoryId == id && c.ContentType == ContentType.Item).ToList();
+                if (items.Any())
+                {
+                    cacheEntry = new { data = items, contentType = ContentType.Item };
+                }
+                else
+                {
+                    var subCategories = _context.Content
+                        .Where(c => c.CategoryId == id && c.ContentType == ContentType.Category)
+                        .ToList();
 
-                subCategories = subCategories.Select(AddItemCountToTitle).ToList();
-
-                return Ok(new { data = subCategories, contentType = ContentType.Category });
+                    subCategories = subCategories.Select(AddItemCountToTitle).ToList();
+                    cacheEntry = new { data = subCategories, contentType = ContentType.Category };
+                    _memoryCache.Set(id, cacheEntry, DateTimeOffset.UtcNow.AddYears(1));
+                }
             }
+
+            return Ok(cacheEntry);
         }
 
         private Content AddPriceRangeToTitle(Content category)

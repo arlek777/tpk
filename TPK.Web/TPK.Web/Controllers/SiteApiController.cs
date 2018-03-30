@@ -17,7 +17,7 @@ namespace TPK.Web.Controllers
 
         [Route("[action]")]
         [HttpGet]
-        //[ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         public Site Get()
         {
             return _context.Site.FirstOrDefault();
