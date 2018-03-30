@@ -7,6 +7,12 @@ export enum ContentType {
     Item
 }
 
+export enum ContentTypeResult {
+    Categories,
+    Items,
+    ItemDetails
+}
+
 export class ContentViewModel {
     constructor(model?: ContentViewModel) {
         if (model) {

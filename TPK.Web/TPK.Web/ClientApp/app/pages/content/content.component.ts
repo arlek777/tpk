@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { BackendService } from '../../services/backend.service';
-import { ContentViewModel, ContentType } from '../../models';
+import { ContentViewModel, ContentType, ContentTypeResult } from '../../models';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
     templateUrl: './content.component.html'
 })
 export class ContentComponent implements OnInit {
-    content: { data: ContentViewModel[], type: ContentType, item: ContentViewModel };
-    ContentType = ContentType;
+    content: { data: ContentViewModel[], contentTypeResult: ContentTypeResult, item: ContentViewModel };
+    ContentTypeResult = ContentTypeResult;
 
     constructor(private backendService: BackendService, private activatedRoute: ActivatedRoute) {
     }

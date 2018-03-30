@@ -87,7 +87,7 @@ namespace TPK.Web.Controllers
                 var items = _context.Content.Where(c => c.CategoryId == item.CategoryId
                    && c.ContentType == ContentType.Item);
 
-               cacheEntry = new { item, data = items, contentType = ContentType.Item };
+               cacheEntry = new { item, data = items, contentTypeResult = ContentTypeResult.ItemDetails };
                 _memoryCache.Set(id, cacheEntry, DateTimeOffset.UtcNow.AddYears(1));
             }
 
@@ -102,7 +102,7 @@ namespace TPK.Web.Controllers
                 var items = _context.Content.Where(c => c.CategoryId == id && c.ContentType == ContentType.Item).ToList();
                 if (items.Any())
                 {
-                    cacheEntry = new { data = items, contentType = ContentType.Item };
+                    cacheEntry = new { data = items, contentTypeResult = ContentTypeResult.Items };
                 }
                 else
                 {
@@ -111,7 +111,7 @@ namespace TPK.Web.Controllers
                         .ToList();
 
                     subCategories = subCategories.Select(AddItemCountToTitle).ToList();
-                    cacheEntry = new { data = subCategories, contentType = ContentType.Category };
+                    cacheEntry = new { data = subCategories, contentTypeResult = ContentTypeResult.Categories };
                     _memoryCache.Set(id, cacheEntry, DateTimeOffset.UtcNow.AddYears(1));
                 }
             }

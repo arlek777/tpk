@@ -8,6 +8,13 @@ namespace TPK.Web.Models
         Item
     }
 
+    public enum ContentTypeResult
+    {
+        Categories,
+        Items,
+        ItemDetails
+    }
+
     public class Content
     {
         [Key]
