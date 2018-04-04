@@ -2,12 +2,14 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TPK.Web.Data;
 using TPK.Web.Models;
 
 namespace TPK.Web.Controllers
 {
+    [Authorize]
     public class SiteController : Controller
     {
         private readonly TPKDbContext _context;

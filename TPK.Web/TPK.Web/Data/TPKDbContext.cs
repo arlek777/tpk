@@ -12,5 +12,6 @@ namespace TPK.Web.Data
 
         public DbSet<Content> Content { get; set; }
         public DbSet<Site> Site { get; set; }
+        public DbSet<Admin> Admin { get; set; }
     }
 }

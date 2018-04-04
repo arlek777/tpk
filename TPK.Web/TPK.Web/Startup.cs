@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +35,9 @@ namespace TPK.Web
 
             var connString = Configuration.GetConnectionString(env);
             services.AddScoped((provider) => new TPKDbContext(connString));
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(o => o.LoginPath = new PathString("/Account/Login"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
