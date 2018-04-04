@@ -32,8 +32,4 @@ export class ItemDetailsComponent implements AfterViewInit {
         if (this.currentIndex <= 0) return;
         this.item = this.items[--this.currentIndex];
     }
-
-    navigateToPreviousUrl() {
-        window.history.back();
-    }
 }

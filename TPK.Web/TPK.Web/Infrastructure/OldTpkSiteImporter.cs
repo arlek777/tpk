@@ -93,7 +93,7 @@ namespace TPK.Web.Infrastructure
                                 n => n.GetAttributeValue("style", "") == "text-align:center; color:#3A5163;").InnerText;
 
                             var description = itemDetailsPageDesc
-                                .FirstOrDefault(n => n.Id == "jg_photo_description")?.InnerText?.Trim();
+                                .FirstOrDefault(n => n.Id == "jg_photo_description")?.InnerHtml?.Trim();
 
                             if (!File.Exists(photoPathToSave))
                             {
@@ -111,8 +111,18 @@ namespace TPK.Web.Infrastructure
                             {
                                 var priceIndex = titlePriceList.FindIndex(s => s.ToLower().Contains("цена"));
                                 price = titlePriceList[++priceIndex];
-                                title = $"{titlePriceList[0]} {titlePriceList[1]} {titlePriceList[2]}";
+                                if (titlePriceList.Count == 3)
+                                {
+                                    title = titlePriceList[0];
+                                }
+                                else
+                                {
+                                    title = $"{titlePriceList[0]} {titlePriceList[1]} {titlePriceList[2]}";
+                                }
                             }
+
+                            title = title.Replace("пам", "Пам")
+                                .Replace("комплекс", "Комплекс");
 
                             content = new Content()
                             {
@@ -120,8 +130,8 @@ namespace TPK.Web.Infrastructure
                                 CategoryId = subCategoryContent.Id,
                                 Description = description,
                                 ImgSrc = photoPathToDb,
-                                Title = title.Replace("пам", "Пам"),
-                                Price = price
+                                Title = title,
+                                Price = price.Replace("грн.", "").Replace("Грн", "").Replace("Грн.", "")
                             };
 
                             dbContext.Content.Add(content);

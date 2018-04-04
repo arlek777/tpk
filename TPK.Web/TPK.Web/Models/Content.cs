@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TPK.Web.Models
 {
@@ -24,6 +26,9 @@ namespace TPK.Web.Models
         [Required]
         public string Title { get; set; }
         public string ImgSrc { get; set; }
+
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
         public string Price { get; set; }
         public string Description { get; set; }
 

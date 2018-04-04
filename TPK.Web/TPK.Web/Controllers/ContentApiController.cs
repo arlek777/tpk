@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using TPK.Web.Data;
 using TPK.Web.Models;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Hosting;
 
 namespace TPK.Web.Controllers
 {
@@ -15,14 +16,16 @@ namespace TPK.Web.Controllers
     {
         private readonly TPKDbContext _context;
         private readonly IMemoryCache _memoryCache;
+        private readonly IHostingEnvironment _environment;
 
         private const string Currency = "грн";
         private const string RootCategoriesCacheKey = "RootCategoriesCacheKey";
 
-        public ContentApiController(TPKDbContext context, IMemoryCache memoryCache)
+        public ContentApiController(TPKDbContext context, IMemoryCache memoryCache, IHostingEnvironment environment)
         {
             _context = context;
             _memoryCache = memoryCache;
+            _environment = environment;
         }
 
         /// <summary>
@@ -34,7 +37,7 @@ namespace TPK.Web.Controllers
         /// </summary>
         [HttpGet]
         [Route("[action]/{id?}")]
-        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        //[ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> Get(int? id)
         {
             try
@@ -69,7 +72,11 @@ namespace TPK.Web.Controllers
                 .ToList();
 
                 rootCategories = rootCategories.Select(AddPriceRangeToTitle).ToList();
-                _memoryCache.Set(RootCategoriesCacheKey, rootCategories, DateTimeOffset.UtcNow.AddYears(1));
+
+                if (!_environment.IsDevelopment())
+                {
+                    _memoryCache.Set(RootCategoriesCacheKey, rootCategories, DateTimeOffset.UtcNow.AddYears(1));
+                }
             }
 
             return Ok(rootCategories);
@@ -88,7 +95,11 @@ namespace TPK.Web.Controllers
                    && c.ContentType == ContentType.Item);
 
                cacheEntry = new { item, data = items, contentTypeResult = ContentTypeResult.ItemDetails };
-                _memoryCache.Set(id, cacheEntry, DateTimeOffset.UtcNow.AddYears(1));
+
+                if (!_environment.IsDevelopment())
+                {
+                    _memoryCache.Set(id, cacheEntry, DateTimeOffset.UtcNow.AddYears(1));
+                }
             }
 
             return Ok(cacheEntry);
@@ -112,7 +123,11 @@ namespace TPK.Web.Controllers
 
                     subCategories = subCategories.Select(AddItemCountToTitle).ToList();
                     cacheEntry = new { data = subCategories, contentTypeResult = ContentTypeResult.Categories };
-                    _memoryCache.Set(id, cacheEntry, DateTimeOffset.UtcNow.AddYears(1));
+
+                    if (!_environment.IsDevelopment())
+                    {
+                        _memoryCache.Set(id, cacheEntry, DateTimeOffset.UtcNow.AddYears(1));
+                    }
                 }
             }
 
@@ -152,6 +167,8 @@ namespace TPK.Web.Controllers
         private IEnumerable<Content> GetCategoryItems(int id)
         {
             var items = _context.Content.Where(c => c.CategoryId == id).ToList();
+            if (!items.Any()) return Enumerable.Empty<Content>();
+
             var item = items.FirstOrDefault();
             while (item?.ContentType != ContentType.Item)
             {

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TPK.Web.Data;
 using TPK.Web.Infrastructure;
@@ -10,6 +13,7 @@ using TPK.Web.Models;
 
 namespace TPK.Web.Controllers
 {
+    [Authorize]
     public class ContentController : Controller
     {
         private readonly TPKDbContext _context;
@@ -21,6 +25,7 @@ namespace TPK.Web.Controllers
             _environment = environment;
         }
 
+        [HttpPost]
         public IActionResult Import()
         {
             OldTpkSiteImporter.ImportToDb(_context, _environment.WebRootPath);
@@ -43,6 +48,7 @@ namespace TPK.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                content.ImgSrc = SaveImg(content.ImageFile);
                 _context.Content.Add(content);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -80,9 +86,7 @@ namespace TPK.Web.Controllers
                 {
                     var dbContent = await _context.Content.SingleOrDefaultAsync(m => m.Id == id);
                     dbContent.Description = content.Description;
-                    dbContent.ContentType = content.ContentType;
-                    dbContent.CategoryId = content.CategoryId;
-                    dbContent.ImgSrc = content.ImgSrc;
+                    dbContent.ImgSrc = SaveImg(content.ImageFile);
                     dbContent.Price = content.Price;
                     dbContent.Title = content.Title;
 
@@ -134,6 +138,19 @@ namespace TPK.Web.Controllers
         private bool CategoryExists(int id)
         {
             return _context.Content.Any(e => e.Id == id);
+        }
+
+        private string SaveImg(IFormFile file)
+        {
+            var imgSrc = "/Img/Items/" + file.FileName;
+            var fullImgSrc = _environment.WebRootPath + "/Img/Items/" + file.FileName;
+            var stream = new MemoryStream();
+            file.CopyTo(stream);
+            stream.Close();
+
+            System.IO.File.WriteAllBytes(fullImgSrc, stream.ToArray());
+
+            return imgSrc;
         }
     }
 }
