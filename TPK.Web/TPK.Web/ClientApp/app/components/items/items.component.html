@@ -2,9 +2,9 @@
     <div class="col-md-4" *ngFor="let item of items">
         <div class="panel panel-default">
             <div class="panel-heading text-center">
-                <div class="col-md-offset-2 col-md-8">
+                <div class="col-md-12">
                     <a [routerLink]="['/content', item.id]">
-                        <img height="200" class="img-rounded" src="{{ item.imgSrc }}" />
+                        <img height="200" class="img-rounded" src="{{ item.imgSrc }}" align="middle"/>
                     </a>
                 </div>
                 <div class="clearfix"></div>

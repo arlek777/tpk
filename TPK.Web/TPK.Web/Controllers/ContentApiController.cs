@@ -20,6 +20,7 @@ namespace TPK.Web.Controllers
 
         private const string Currency = "грн";
         private const string RootCategoriesCacheKey = "RootCategoriesCacheKey";
+        private DateTimeOffset CacheLifetime = DateTimeOffset.UtcNow.AddMinutes(15);
 
         public ContentApiController(TPKDbContext context, IMemoryCache memoryCache, IHostingEnvironment environment)
         {
@@ -37,7 +38,7 @@ namespace TPK.Web.Controllers
         /// </summary>
         [HttpGet]
         [Route("[action]/{id?}")]
-        //[ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+        [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> Get(int? id)
         {
             try
@@ -72,11 +73,7 @@ namespace TPK.Web.Controllers
                 .ToList();
 
                 rootCategories = rootCategories.Select(AddPriceRangeToTitle).ToList();
-
-                if (!_environment.IsDevelopment())
-                {
-                    _memoryCache.Set(RootCategoriesCacheKey, rootCategories, DateTimeOffset.UtcNow.AddYears(1));
-                }
+                _memoryCache.Set(RootCategoriesCacheKey, rootCategories, CacheLifetime);
             }
 
             return Ok(rootCategories);
@@ -98,7 +95,7 @@ namespace TPK.Web.Controllers
 
                 if (!_environment.IsDevelopment())
                 {
-                    _memoryCache.Set(id, cacheEntry, DateTimeOffset.UtcNow.AddYears(1));
+                    _memoryCache.Set(id, cacheEntry, CacheLifetime);
                 }
             }
 
@@ -126,7 +123,7 @@ namespace TPK.Web.Controllers
 
                     if (!_environment.IsDevelopment())
                     {
-                        _memoryCache.Set(id, cacheEntry, DateTimeOffset.UtcNow.AddYears(1));
+                        _memoryCache.Set(id, cacheEntry, CacheLifetime);
                     }
                 }
             }

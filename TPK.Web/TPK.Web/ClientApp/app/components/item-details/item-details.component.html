@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-md-6" *ngIf="item.description">
                         <h3>Описание: </h3>
-                        <div [trust-html]="item.description"></div>
+                        <div [trust-html]="item.description" style="word-wrap: break-word;"></div>
                     </div>
                 </div>
             </div>

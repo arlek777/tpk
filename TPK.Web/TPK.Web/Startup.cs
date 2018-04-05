@@ -42,7 +42,7 @@ namespace TPK.Web
             })
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            var env = Env.IsDevelopment() ? "Local" : "Remote";
+            var env = Env.IsDevelopment() ? "Remote" : "Remote";
 
             var connString = Configuration.GetConnectionString(env);
             services.AddScoped((provider) => new TPKDbContext(connString));

@@ -3,11 +3,8 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TPK.Web.Data;
 using TPK.Web.Infrastructure;
@@ -15,7 +12,6 @@ using TPK.Web.Models;
 
 namespace TPK.Web.Controllers
 {
-    [Authorize]
     public class ContentController : Controller
     {
         private readonly TPKDbContext _context;

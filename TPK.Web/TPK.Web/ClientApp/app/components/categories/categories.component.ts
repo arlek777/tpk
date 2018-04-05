@@ -8,7 +8,13 @@ import { ActivatedRoute } from '@angular/router';
     templateUrl: './categories.component.html',
     styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
     @Input()
     categories: ContentViewModel[] = [];
+
+    inited = false;
+
+    ngOnInit() {
+        setTimeout(() => this.inited = true, 400);
+    }
 }
