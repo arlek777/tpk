@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TPK.Web.Data;
@@ -9,11 +11,11 @@ using TPK.Web.Models;
 
 namespace TPK.Web.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly TPKDbContext _context;
         private readonly IPasswordHasher _passwordHasher;
-        private readonly IAuthorizationService _service;
 
         public AccountController(TPKDbContext context, IPasswordHasher passwordHasher)
         {
@@ -27,20 +29,26 @@ namespace TPK.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(Admin model)
+        public async Task <IActionResult> Login(Admin model)
         {
-            var admin = _context.Admin.FirstOrDefault(a => a.UserName == model.UserName);
-            if (admin != null)
+            var dbAdmin = _context.Admin.FirstOrDefault(a => a.UserName == model.UserName);
+            if (dbAdmin != null)
             {
-                var result = _passwordHasher.VerifyHashedPassword(admin.Password, model.Password);
+                var result = _passwordHasher.VerifyHashedPassword(dbAdmin.HashPassword, model.Password);
                 if(result == PasswordVerificationResult.Success)
                 {
-                    var claims = new ClaimsPrincipal(new ClaimsIdentity[] { new ClaimsIdentity() { Label = model.UserName } });
-                    HttpContext.SignInAsync(claims);
+                    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                    identity.AddClaim(new Claim(ClaimTypes.Name, model.UserName));
+
+                    var principal = new ClaimsPrincipal(identity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
+                        principal, new AuthenticationProperties { IsPersistent = true });
+
                     return RedirectToAction("Index", "Content");
                 }
             }
 
+            ViewBag.Error = "Not valid.";
             return View();
         }
     }
