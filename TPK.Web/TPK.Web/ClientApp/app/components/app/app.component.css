@@ -14,3 +14,14 @@ body {
     text-align: center;
     padding-top: 150px;
 }
+
+.jumbotron--small-paddings {
+    padding-bottom: 10px;
+    padding-top: 20px;
+    padding-right: 0;
+}
+
+.phone-block {
+    margin-right: 14px;
+    padding-left: 60px
+}

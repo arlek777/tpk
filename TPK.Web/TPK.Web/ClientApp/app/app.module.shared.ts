@@ -15,6 +15,7 @@ import { ItemDetailsComponent } from './components/item-details/item-details.com
 import { ContactComponent } from './pages/contact/contact.component';
 import { TrustHtmlDirective } from './directives/trust-html.directive';
 import { SpinnerDirective } from './directives/spinner.directive';
+import { ToggleMobileNavbarDirective } from './directives/toggle-navbar.directive';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { SpinnerDirective } from './directives/spinner.directive';
         ItemDetailsComponent,
         ContactComponent,
         TrustHtmlDirective,
-        SpinnerDirective
+        SpinnerDirective,
+        ToggleMobileNavbarDirective
     ],
     imports: [
         CommonModule,

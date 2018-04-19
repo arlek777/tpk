@@ -1,3 +1,15 @@
+.slider {
+    overflow-y: hidden;
+    max-height: 500px; /* approximate max height */
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.slider.closed {
+    max-height: 0;
+}
+
 li .glyphicon {
     margin-right: 10px;
 }
@@ -23,7 +35,8 @@ li.link-active a:focus {
     /* On small screens, convert the nav menu to a vertical sidebar */
     .main-nav {
         height: 100%;
-        width: calc(25% - 20px);
+        /*width: calc(20% - 20px);*/
+        width: 16.66666667%;
     }
     .navbar {
         border-radius: 0px;
