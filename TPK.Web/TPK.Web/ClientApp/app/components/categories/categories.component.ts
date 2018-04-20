@@ -15,6 +15,6 @@ export class CategoriesComponent implements OnInit {
     inited = false;
 
     ngOnInit() {
-        setTimeout(() => this.inited = true, 400);
+        setTimeout(() => this.inited = true, 300);
     }
 }

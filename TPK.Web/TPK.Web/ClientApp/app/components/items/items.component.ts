@@ -15,6 +15,6 @@ export class ItemsComponent implements OnInit {
     CURRENCY = CURRENCY;
 
     ngOnInit() {
-        setTimeout(() => this.inited = true, 500);
+        setTimeout(() => this.inited = true, 300);
     }
 }

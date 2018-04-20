@@ -48,6 +48,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Img\Gallery\" />
+    <Folder Include="wwwroot\Thumb\Img\Items\" />
   </ItemGroup>
 
   <ItemGroup>

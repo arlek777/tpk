@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using TPK.Web.Models;
 
 namespace TPK.Web.Controllers
 {
+    [Authorize]
     public class ContentController : Controller
     {
         private readonly TPKDbContext _context;
@@ -26,7 +28,16 @@ namespace TPK.Web.Controllers
         [HttpPost]
         public IActionResult Import()
         {
-            OldTpkSiteImporter.ImportToDb(_context, _environment.WebRootPath);
+            //var files = Directory.GetFiles(Path.Combine(_environment.WebRootPath, @"Img\Items"));
+            //var thumbPath = Path.Combine(_environment.WebRootPath, @"Thumb\Img\Items");
+            //foreach (var file in files)
+            //{
+            //    var fileInfo = new FileInfo(file);
+            //    var bitmap = ImageHelper.CreateThumbnail(file, 300, 300);
+            //    bitmap.Save(Path.Combine(thumbPath, fileInfo.Name), ImageFormat.Jpeg);
+            //}
+
+            //OldTpkSiteImporter.ImportToDb(_context, _environment.WebRootPath);
             return RedirectToAction("Index");
         }
 
@@ -147,6 +158,9 @@ namespace TPK.Web.Controllers
             stream.Close();
 
             System.IO.File.WriteAllBytes(fullImgSrc, stream.ToArray());
+
+            var bitmap = ImageHelper.CreateThumbnail(fullImgSrc, 300, 300);
+            bitmap.Save(_environment.WebRootPath + "Thumb/Img/Items/" + file.FileName);
 
             return imgSrc;
         }
