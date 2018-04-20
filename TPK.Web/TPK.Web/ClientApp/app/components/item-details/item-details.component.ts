@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { Component, Input, AfterViewInit, OnInit } from '@angular/core';
 import { BackendService } from '../../services/backend.service';
 import { ContentViewModel, ContentType, CURRENCY } from '../../models';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,17 +7,22 @@ import { ActivatedRoute, Router } from '@angular/router';
     selector: 'item-details',
     templateUrl: './item-details.component.html'
 })
-export class ItemDetailsComponent implements AfterViewInit {
+export class ItemDetailsComponent implements OnInit, AfterViewInit {
     @Input()
     item: ContentViewModel = new ContentViewModel();
 
     @Input()
     items: ContentViewModel[] = [];
 
+    inited = false;
     currentIndex = -1;
     CURRENCY = CURRENCY;
 
     constructor(private router: Router) {}
+
+    ngOnInit(): void {
+        setTimeout(() => this.inited = true, 500);
+    }
 
     ngAfterViewInit() {
         this.currentIndex = this.items.findIndex(i => i.id === this.item.id);

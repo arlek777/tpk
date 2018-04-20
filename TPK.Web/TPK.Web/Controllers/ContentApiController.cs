@@ -20,7 +20,7 @@ namespace TPK.Web.Controllers
 
         private const string Currency = "грн";
         private const string RootCategoriesCacheKey = "RootCategoriesCacheKey";
-        private DateTimeOffset CacheLifetime = DateTimeOffset.UtcNow.AddMinutes(15);
+        private DateTimeOffset CacheLifetime = DateTimeOffset.UtcNow.AddHours(12);
 
         public ContentApiController(TPKDbContext context, IMemoryCache memoryCache, IHostingEnvironment environment)
         {
