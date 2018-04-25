@@ -1,3 +1,8 @@
-﻿.main-color {
+﻿body {
+    position: relative;
+    background: url("../site_bg.png");
+}
+
+.main-color {
     color: lightslategray
 }
