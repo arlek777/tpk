@@ -8,6 +8,7 @@ using TPK.Web.Data;
 using TPK.Web.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace TPK.Web.Controllers
 {
@@ -17,16 +18,19 @@ namespace TPK.Web.Controllers
         private readonly TPKDbContext _context;
         private readonly IMemoryCache _memoryCache;
         private readonly IHostingEnvironment _environment;
+        private readonly IConfiguration _configuration;
 
         private const string Currency = "грн";
         private const string RootCategoriesCacheKey = "RootCategoriesCacheKey";
-        private DateTimeOffset CacheLifetime = DateTimeOffset.UtcNow.AddHours(12);
 
-        public ContentApiController(TPKDbContext context, IMemoryCache memoryCache, IHostingEnvironment environment)
+        private readonly DateTimeOffset _cacheLifetime = DateTimeOffset.UtcNow.AddHours(12);
+
+        public ContentApiController(TPKDbContext context, IMemoryCache memoryCache, IHostingEnvironment environment, IConfiguration configuration)
         {
             _context = context;
             _memoryCache = memoryCache;
             _environment = environment;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -63,6 +67,23 @@ namespace TPK.Web.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> SendOrder([FromBody]SendOrderModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var items = _context.Content.Where(c => model.ItemIds.Contains(c.Id)).ToList();
+            var managerEmails = _configuration.Get<string[]>();
+
+            // TODO send order email
+
+            return Ok();
+        }
+
         private IActionResult GetRootCategories()
         {
             List<Content> rootCategories;
@@ -73,7 +94,7 @@ namespace TPK.Web.Controllers
                 .ToList();
 
                 rootCategories = rootCategories.Select(AddPriceRangeToTitle).ToList();
-                _memoryCache.Set(RootCategoriesCacheKey, rootCategories, CacheLifetime);
+                _memoryCache.Set(RootCategoriesCacheKey, rootCategories, _cacheLifetime);
             }
 
             return Ok(rootCategories);
@@ -95,7 +116,7 @@ namespace TPK.Web.Controllers
 
                 if (!_environment.IsDevelopment())
                 {
-                    _memoryCache.Set(id, cacheEntry, CacheLifetime);
+                    _memoryCache.Set(id, cacheEntry, _cacheLifetime);
                 }
             }
 
@@ -123,7 +144,7 @@ namespace TPK.Web.Controllers
 
                     if (!_environment.IsDevelopment())
                     {
-                        _memoryCache.Set(id, cacheEntry, CacheLifetime);
+                        _memoryCache.Set(id, cacheEntry, _cacheLifetime);
                     }
                 }
             }

@@ -12,12 +12,12 @@ using TPK.Web.Models;
 namespace TPK.Web.Controllers
 {
     [AllowAnonymous]
-    public class AccountController : Controller
+    public class AdminLoginController : Controller
     {
         private readonly TPKDbContext _context;
         private readonly IPasswordHasher _passwordHasher;
 
-        public AccountController(TPKDbContext context, IPasswordHasher passwordHasher)
+        public AdminLoginController(TPKDbContext context, IPasswordHasher passwordHasher)
         {
             _context = context;
             _passwordHasher = passwordHasher;
